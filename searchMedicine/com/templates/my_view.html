@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyMedicine</title>
+    <!-- reset.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_main.css') }}" />
+    <script src="{{ url_for('static', filename='js/jquery-3.5.0.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='js/common.js') }}" ></script>
+
+</head>
+<body>
+<div id="contents">
+    <div class="myView_wrap">
+<form id="form" name="form" action = "./my_edit" method = "POST">
+        <p class="page_title">약품상세보기
+            <a href="javascript:modify_medi();" id="btn_edit"><img src="{{ url_for('static', filename='images/btn_edit.png') }}"></a>
+            <a href="javascript:save_medi();" id="btn_save"><img src="{{ url_for('static', filename='images/btn_save.png') }}"></a>
+            <a id="btn_close" href="javascript:win_close();">ⓧ</a>
+        </p>
+    {% for items in result %}
+        <input type="hidden" name="IDX" id="IDX" value="{{items[0]}}">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr class="tr1">
+                <td class="td1">복지분류</td>
+                <td class="td2">
+                    <p class="text_p">{{items[1]}}</p>
+                    <p class="input_p"><input type="text" name="BOKGI" id="BOKGI" value="{{items[1]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr2">
+                <td class="td1">약품대분류</td>
+                <td class="td2">
+                    <p class="text_p">{{items[2]}}</p>
+                    <p class="input_p"><input type="text" name="CATEGORY_1" id="CATEGORY_1" value="{{items[2]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr3">
+                <td class="td1">약품소분류</td>
+                <td class="td2">
+                    <p class="text_p">{{items[3]}}</p>
+                    <p class="input_p"><input type="text" name="CATEGORY_2" id="CATEGORY_2" value="{{items[3]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr4">
+                <td class="td1">종류</td>
+                <td class="td2">
+                    <p class="text_p">{{items[4]}}</p>
+                    <p class="input_p"><input type="text" name="CATEGORY_3" id="CATEGORY_3" value="{{items[4]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr5">
+                <td class="td1">급여구분</td>
+                <td class="td2">
+                    <p class="text_p">{{items[5]}}</p>
+                    <p class="input_p"><input type="text" name="SALARY" id="SALARY" value="{{items[5]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr6">
+                <td class="td1">성분 및 함량</td>
+                <td class="td2">
+                    <p class="text_p">{{items[6]}}</p>
+                    <p class="input_p"><input type="text" name="INGREDIENT" id="INGREDIENT" value="{{items[6]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr7">
+                <td class="td1">제품명</td>
+                <td class="td2">
+                    <p class="text_p">{{items[7]}}</p>
+                    <p class="input_p"><input type="text" name="PRODUCT" id="PRODUCT" value="{{items[7]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr8">
+                <td class="td1">제조사명</td>
+                <td class="td2">
+                    <p class="text_p">{{items[8]}}</p>
+                    <p class="input_p"><input type="text" name="MADEBY" id="MADEBY" value="{{items[8]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr9">
+                <td class="td1">대조약</td>
+                <td class="td2">
+                    <p class="text_p">{{items[9]}}</p>
+                    <p class="input_p"><input type="text" name="MATCH_MEDICINE" id="MATCH_MEDICINE" value="{{items[9]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr10">
+                <td class="td1">약가</td>
+                <td class="td2">
+                    <p class="text_p">{{items[10]}}</p>
+                    <p class="input_p"><input type="text" name="PRICE" id="PRICE" value="{{items[10]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr11">
+                <td class="td1">보험청구코드</td>
+                <td class="td2">
+                    <p class="text_p">{{items[11]}}</p>
+                    <p class="input_p"><input type="text" name="INS_CODE" id="INS_CODE" value="{{items[11]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr12">
+                <td class="td1">포장단위</td>
+                <td class="td2">
+                    <p class="text_p">{{items[12]}}</p>
+                    <p class="input_p"><input type="text" name="PACKET" id="PACKET" value="{{items[12]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr13">
+                <td class="td1">요율</td>
+                <td class="td2">
+                    <p class="text_p">{{items[13]}}</p>
+                    <p class="input_p"><input type="text" name="YOYUL" id="YOYUL" value="{{items[13]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr14">
+                <td class="td1">비고</td>
+                <td class="td2">
+                    <p class="text_p">{{items[14]}}</p>
+                    <p class="input_p"><input type="text" name="BIGO" id="BIGO" value="{{items[14]}}"></p>
+                </td>
+            </tr>
+            <tr class="tr15">
+                <td class="td1">최종수정</td>
+                <td class="td2">
+                    <p class="text_p">{{items[17]}} / {{items[18]}}</p>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+</form>
+    </div>
+</div>
+<script>
+    function win_close(){
+        window.close();
+    }
+    function modify_medi(){
+        $("#btn_edit").hide();
+        $("#btn_save").show();
+        $(".text_p").hide();
+        $(".input_p").show();
+    }
+    function save_medi(){
+        if(confirm("저장 하시겠습니까?")){
+            form.submit();
+        }
+    }
+</script>
+</body>
+</html>

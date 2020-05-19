@@ -1,0 +1,136 @@
+/*로그인*/
+#login {width:100%}
+#login #login_box {width:450px; margin:0 auto; border:15px solid #eee; margin-top:250px; padding:20px;height:173px;}
+#tbl_login {width:100%;}
+#tbl_login .tr1 img {width:60px; padding:10px;}
+#tbl_login .tr1 p {  font-size: 32px;    font-weight: bold;    color: #1a468f; text-align:center}
+#tbl_login .tr1 td {background:#eee;}
+#tbl_login input {height:20px; width:320px; padding:10px; border:1px solid #aaa;}
+#btn_login {width:105px; background:#1a468f; color:white; font-weight:bold; height:88px; display:block; float:right; text-align:center;font-size: 18px;  line-height: 85px;    border-radius: 10px;}
+#btn_login:hover {background:#1a8f23;}
+
+/*공동레이아웃*/
+.align_center {text-align:center;}
+.font_bold {font-weight:bold}
+.btn1 {color: #fff;   text-decoration: none;   border: 1px solid #333;   padding: 5px;   background: #1a468f;   border-radius: 3px;}
+.btn2 {color: #fff;   text-decoration: none;   border: 1px solid #333;   padding: 5px;   background: #999;   border-radius: 3px;}
+body .btn_plus {background:url('../images/btn_plus.png') 0 1px no-repeat; padding-left:17px;    color: #197b30;    font-weight: bold;    font-size: 13px;}
+.align_right {text-align:right}
+.overflow_hidden {overflow:hidden;}
+body {background:#bbb;position:relative;}
+.font_red {color:red;}
+.bg_ccc {background:#ccc;}
+select {padding:3px 3px; border-radius:5px;border:1px solid #aaa; background:#f7f4f4;}
+input[type=text],input[type=password] {padding:3px 3px; border-radius:5px;border:1px solid #aaa; background:#f7f4f4;}
+input[type=text]::placeholder,input[type=password]::placeholder {color:#aaa;}
+input[type=text]::-webkit-input-placeholder,input[type=password]::-webkit-input-placeholder {color:#aaa;}
+input[type=text]:-ms-input-placeholder,input[type=password]:-ms-input-placeholder {color:#aaa;}
+
+#loading_gif {display:none; position:fixed; width:100%; height:80%; padding-top:20%; background:url('../images/gray_bg.png') 0 0 repeat; z-index:10;}
+#loading_gif img {width:100px;}
+#loading_gif #loading_info {font-weight:bold; color:#00aeef; font-size:14px; margin-top:25px;}
+#top_line {height:20px; padding:5px; overflow:hidden}
+#top_line #logout {font-weight:bold; color:#999; font-size:11px;}
+#top_line #logout img {width:18px;}
+#top_line .my_name {color:#13bd3f; font-size:11px; font-weight:bold; }
+#main_wrap {width:960px; margin:0 auto; background:#fff; padding:10px 10px 33px 10px; min-height:800px; position:relative; overflow:hidden;}
+#main_header {overflow:hidden; width:430px;float:left; height:64px; background:#ddd}
+.header_wrap {border-bottom:2px solid #ddd; }
+#main_header #main_logo {width:80px; float:left;}
+#main_header #main_logo img {width:50px; padding-top:10px;}
+#main_header #main_TITLE {width:350px; float:left;}
+#main_header #main_TITLE p {color: #1a468f; font-size: 30px; font-weight: bold; padding-top: 27px;}
+#main_body {overflow:hidden}
+
+#nav {width:530px; border-bottom:2px solid #ddd; overflow:hidden;  background: #ddd; height:62px;  float:left;}
+#contents {width:100%;}
+#nav li {padding: 20px 0; float:left;  text-align: center;    background: #13a6bd;  border-right:2px solid #ddd;   height:62px}
+#nav li a {color: #fff;text-decoration:none;}
+#nav li.choice, #nav li:hover { background:#b8c5c7;}
+#nav li.choice a, #nav li:hover a{ color:#333; font-weight:bold}
+
+#contents .page_title {font-size:18px; font-weight:900; padding:15px 0 5px 10px; color:#13a6bd;}
+#contents table {width:100%; border-top:2px solid #13a6bd;border-bottom:1px solid #333;}
+#contents table td {padding:10px; border-left:1px solid #888; border-top:1px solid #888;}
+#contents table .tr1 td,#contents table .tr1 th  {font-weight:bold; text-align:center; border-top:0; height:30px; background:#ddd;}
+#contents table .td1 {border-left:0;}
+
+
+/*페이지별*/
+#contents #search_table  {height:685px}
+#contents #search_table .td1 {width:500px; }
+#search_product {width:100%; height:590px;}
+#main_footer {position:absolute; bottom:0; left:10px; padding:10px; border-top:2px solid #ddd; width:940px; background:white;}
+.copyright {text-align:center; font-size:10px; font-weight:bold; color:#777;}
+
+
+#contents #result_table a {    text-decoration: underline; width:100%; display:block}
+#contents #result_table .td1 .eng_nm {color:#999; font-size:13px; display:block;}
+#contents #result_table .g_dang {color:#999;}
+#contents #result_table .td3 li {overflow:hidden; width:100%;margin-bottom:5px;}
+#contents #result_table .td3 span {display:block; float:left; margin-right:5px;}
+#contents #result_table .td3 span.bokgi {display:none;}
+#contents #result_table .td3 span.category_1 {display:none;}
+#contents #result_table .td3 span.category_2 {display:none;}
+#contents #result_table .td3 span.category_3 {display:none;}
+#contents #result_table .td3 span.salary {display:none;}
+#contents #result_table .td3 span.my_ingredient {display:none;}
+#contents #result_table .td3 span.product {}
+#contents #result_table .td3 span.madeby {color:#999;}
+#contents #result_table .td3 span.match_medicine {display:none;}
+#contents #result_table .td3 span.price {}
+#contents #result_table .td3 span.ins_code {display:none;}
+#contents #result_table .td3 span.packet {display:none;}
+#contents #result_table .td3 span.yoyul { font-weight:bold; font-size:12px;}
+body #contents #result_table a.btn_plus {text-decoration: none; }
+#contents #result_table .mylist_search_box {overflow:hidden;}
+#contents #result_table .mylist_search_box {overflow:hidden;}
+#contents #result_table .search_item {width:300px; padding:3px 3px; float:left;border-radius:5px;border:1px solid #ccc; background:#f7f4f4; }
+#contents #result_table .search_item::placeholder {color:#ccc;}
+#contents #result_table .search_item::-webkit-input-placeholder {color:#ccc;}
+#contents #result_table .search_item:-ms-input-placeholder {color:#ccc;}
+#contents #result_table .btn_plus { float:left; width:50px;margin: 3px 0 0 7px; }
+#contents #result_table  .td3 span.btn_info { font-size:11px; color:red; display:none;}
+
+
+#contents #my_list {table-layout:fixed; word-break:break-all;}
+#contents #my_list td {font-size:12px; padding:3px; text-align:center }
+#contents #my_list td.align_right {text-align:right;}
+#contents #my_list .td7 a {text-decoration:underline;}
+
+#contents #user_list {table-layout:fixed; word-break:break-all;}
+#contents #user_list td {font-size:12px; padding:3px; text-align:center; height:30px;}
+#contents #user_list .btn_save {display:none;}
+#contents #user_list input {width:250px;}
+#contents #user_list input#edit_id {width:200px;}
+#contents #user_list select {width:80px;}
+
+/*popup 공동*/
+#main_wrap .popup {width:500px; padding:15px; border:2px solid #1a468f; background:#fff; position:absolute; left:200px; top:146px; box-shadow: 5px 5px 10px #666; border-radius: 5px; display:none;}
+#main_wrap .popup .popup_title {font-weight:bold; color:#666; border-bottom:2px dotted #aaa; padding-bottom:10px; margin-bottom:10px}
+#main_wrap .popup .popup_title .btn2 {float:right; font-size:10px; font-weight:normal;}
+#main_wrap .popup .infomation,#main_wrap .popup .infomation span {font-size:11px; color:red; margin-bottom:5px}
+#btn_pwd_chg {display: inline-block;padding: 15px; margin-left:1px;}
+#main_wrap .popup .bg_white {background:white;}
+#main_wrap .popup .my_info {font-size:13px; font-weight:bold; color:#13bd3f;}
+/*upload_popup*/
+#upload_popup input {width:420px; height:28px;}
+/*pwd 변경 popup*/
+body #main_wrap #change_pwd_popup { top:40px; left:350px; width:350px;}
+#main_wrap #change_pwd_popup input {width:280px; padding:3px 3px; float:left;border-radius:5px;border:1px solid #aaa; background:#f7f4f4; margin-bottom:5px;}
+#main_wrap #change_pwd_popup input::placeholder {color:#aaa;}
+#main_wrap #change_pwd_popup input::-webkit-input-placeholder {color:#aaa;}
+#main_wrap #change_pwd_popup input:-ms-input-placeholder {color:#aaa;}
+
+
+/*상세보기 팝업*/
+#contents .myView_wrap {background:white; padding:10px; height:480px; overflow-y:scroll;}
+.myView_wrap #btn_close {font-size:20px; float:right; margin-right:10px;}
+#contents .myView_wrap table {margin-top:10px;}
+#contents .myView_wrap table .tr1 td {font-weight: normal;    text-align: left;    border-top: 0;    height: auto;    background: none;}
+#contents .myView_wrap table tr .td1 {font-weight: bold;    text-align: center;      background: #eee; width:150px;}
+#contents .myView_wrap table tr .td2 {width:300px;}
+body #contents .myView_wrap table tr td {padding:5px;overflow:hidden;word-wrap:break-word;}
+#contents .myView_wrap .input_p {display:none;}
+#contents .myView_wrap .input_p input {width:90%; padding:2px 5px;}
+#contents .myView_wrap #btn_save {display:none;}

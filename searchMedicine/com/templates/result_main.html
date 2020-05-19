@@ -1,0 +1,376 @@
+
+ {% include 'header.html' %}
+    <script src="{{ url_for('static', filename='js/jquery.table2excel.js') }}" ></script>
+    <!--검색어자동완성-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <div id="main_body">
+        <div id="contents">
+            <p class="page_title">원료명으로 검색 결과 <img src="{{ url_for('static', filename='images/btn_search.png') }}" alt="검색결과"> &nbsp; &nbsp;<a  href="javascript:download_excel()" class="btn1">엑셀다운로드</a></p>
+            <!-- search한 값을 여기에 보관했다 li에 붙임-->
+            <input type="hidden" class="sel_item" name="sel_IDX" id="sel_IDX"  />
+            <input type="hidden" class="sel_item" name="sel_BOKGI" id="sel_BOKGI"  />
+            <input type="hidden" class="sel_item" name="sel_CATEGORY_1" id="sel_CATEGORY_1"  />
+            <input type="hidden" class="sel_item" name="sel_CATEGORY_2" id="sel_CATEGORY_2"  />
+            <input type="hidden" class="sel_item" name="sel_CATEGORY_3" id="sel_CATEGORY_3"  />
+            <input type="hidden" class="sel_item" name="sel_SALARY" id="sel_SALARY"  />
+            <input type="hidden" class="sel_item" name="sel_INGREDIENT" id="sel_INGREDIENT"  />
+            <input type="hidden" class="sel_item" name="sel_PRODUCT" id="sel_PRODUCT"  />
+            <input type="hidden" class="sel_item" name="sel_MADEBY" id="sel_MADEBY"  />
+            <input type="hidden" class="sel_item" name="sel_MATCH_MEDICINE" id="sel_MATCH_MEDICINE"  />
+            <input type="hidden" class="sel_item" name="sel_PRICE" id="sel_PRICE"  />
+            <input type="hidden" class="sel_item" name="sel_INS_CODE" id="sel_INS_CODE"  />
+            <input type="hidden" class="sel_item" name="sel_PACKET" id="sel_PACKET"  />
+            <input type="hidden" class="sel_item" name="sel_YOYUL" id="sel_YOYUL"  />
+            <input type="hidden" class="sel_item" name="sel_BIGO" id="sel_BIGO"  />
+            <input type="hidden" class="sel_item" name="sel_REGIDATE" id="sel_REGIDATE"  />
+            <input type="hidden" class="sel_item" name="sel_INSERT_ID" id="sel_INSERT_ID"  />
+            <input type="hidden" class="sel_item" name="sel_MODIFYDATE" id="sel_MODIFYDATE"  />
+            <input type="hidden" class="sel_item" name="sel_MODIFY_ID" id="sel_MODIFY_ID"  />
+            <table cellpadding="0" cellspacing="0" border="0" id="result_table">
+                <colgroup>
+                    <col width="25%">
+                    <col width="20%">
+                    <col width="55%">
+                </colgroup>
+                <tr class="tr1">
+                    <th class="td1">제품명
+                    </th>
+                    <th class="td2">성분 및 함량
+                    </th>
+                    <th class="td3">대 체
+                    </th>
+                </tr>
+                {% for items in result %}
+                <tr class="tr2" id="tr2_{{loop.index}}">
+                    <td class="td1">
+                        {% if items['link']|length %}
+                        <a href="{{items['link']}}" target="_blank">
+                        {% endif %}
+                            {% if items['target'][:2] != items['korean_nm'][:2] %}
+                                {% set class = ' font_red font_bold ' %}
+                            {% else%}
+                                {% set class = '' %}
+                            {% endif %}
+
+                            <span class="kor_nm {{class}}">{{items['target']}}</span><span class="eng_nm">{{items['eng_nm']}}</span>
+                        {% if items['link']|length %}
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td class="td2"><span class="g_dang">{{items['g_dang']}}</span><br/><span class="ingradint">{{items['ingradint']}}</span></td>
+                   <td class="td3">
+                       <ul class="mylist mylist_{{loop.index}}">
+                        <li class="mylist_search_box" id="mylist_search_box_{{loop.index}}">
+                            <input type="text" class="search_item" name="search_item3" id="search_item{{loop.index}}" placeholder="품목명, 성분명, 대조품목명으로 검색하세요"  />
+                            <a href="javascript:plus_myItem({{loop.index}});" class="btn_plus">add</a>
+                            <span class="btn_info btn_info_{{loop.index}}">검색한 품목 추가를 원하시면 오른쪽 "add"버튼 클릭.</span>
+                        </li>
+                        {% for item2 in items['myData_list'] %}
+                            <li id="mylist_li_{{item2[0]}}" class="idx_{{loop.index}}">
+                                <span class="radio_class"><input type="radio" name="{{items['target']}}[]" value="{{item2[0]}}"></span>
+                                <span class="bokgi">{{item2[1]}}</span>
+                                <span class="category_1">{{item2[2]}}</span>
+                                <span class="category_2">{{item2[3]}}</span>
+                                <span class="category_3">{{item2[4]}}</span>
+                                <span class="salary">{{item2[5]}}</span>
+                                <span class="my_ingredient">{{item2[6]}}</span>
+                                <a href="javascript:myMediView({{item2[0]}});"><span class="product">{{item2[7]}}</span></a>
+                                <span class="madeby">{{item2[8]}}</span>
+                                <span class="match_medicine">{{item2[9]}}</span>
+                                <span class="price">{{item2[10]}}</span>
+                                <span class="ins_code">{{item2[11]}}</span>
+                                <span class="packet">{{item2[12]}}</span>
+                                <span class="yoyul">{{item2[13]}}</span>
+                                <span class="bigo">{{item2[14]}}</span>
+                            </li>
+                        {% endfor %}
+<script>// 추가품목 검색 ajax
+     $(function() {    //화면 다 뜨면 시작
+        $("#search_item{{loop.index}}").autocomplete({  //오토 컴플릿트 시작
+            source : function( request, response ) {
+             $.ajax({
+                    type: 'post',
+                    url: "/select_item",
+                    dataType: "json",
+                    //request.term = $("#autocomplete").val()
+                    data: { value : request.term },
+                    success: function(data) {
+                        //서버에서 json 데이터 response 후 목록에 뿌려주기 위함
+                        response(
+                            $.map(data, function(item) {
+                                return {
+                                    label: item[7] + " / " + item[8] + " / " + item[13],
+                                    value: item[7],
+                                    IDX : item[0],
+                                    BOKGI : item[1],
+                                    CATEGORY_1 : item[2],
+                                    CATEGORY_2 : item[3],
+                                    CATEGORY_3 : item[4],
+                                    SALARY : item[5],
+                                    INGREDIENT : item[6],
+                                    PRODUCT : item[7],
+                                    MADEBY : item[8],
+                                    MATCH_MEDICINE : item[9],
+                                    PRICE : item[10],
+                                    INS_CODE : item[11],
+                                    PACKET : item[12],
+                                    YOYUL : item[13],
+                                    BIGO : item[14],
+                                    REGIDATE : item[15],
+                                    INSERT_ID : item[16],
+                                    MODIFYDATE : item[17],
+                                    MODIFY_ID : item[18]
+                                }
+                            })
+                        );
+                    }
+               });
+            },
+            select : function(event, ui) {
+                $(".btn_info_"+{{loop.index}}).show();
+
+                //아이템 선택시 hidden값 넣어주기
+                //console.log(ui.item);
+                var sel_item = ui.item;
+                $("#sel_IDX").val(sel_item['IDX']);
+                $("#sel_BOKGI").val(sel_item['BOKGI']);
+                $("#sel_CATEGORY_1").val(sel_item['CATEGORY_1']);
+                $("#sel_CATEGORY_2").val(sel_item['CATEGORY_2']);
+                $("#sel_CATEGORY_3").val(sel_item['CATEGORY_3']);
+                $("#sel_SALARY").val(sel_item['SALARY']);
+                $("#sel_INGREDIENT").val(sel_item['INGREDIENT']);
+                $("#sel_PRODUCT").val(sel_item['PRODUCT']);
+                $("#sel_MADEBY").val(sel_item['MADEBY']);
+                $("#sel_MATCH_MEDICINE").val(sel_item['MATCH_MEDICINE']);
+                $("#sel_PRICE").val(sel_item['PRICE']);
+                $("#sel_INS_CODE").val(sel_item['INS_CODE']);
+                $("#sel_PACKET").val(sel_item['PACKET']);
+                $("#sel_YOYUL").val(sel_item['YOYUL']);
+                $("#sel_BIGO").val(sel_item['BIGO']);
+                $("#sel_REGIDATE").val(sel_item['REGIDATE']);
+                $("#sel_INSERT_ID").val(sel_item['INSERT_ID']);
+                $("#sel_MODIFYDATE").val(sel_item['MODIFYDATE']);
+                $("#sel_MODIFY_ID").val(sel_item['MODIFY_ID']);
+
+            },
+            focus : function(event, ui) {    //포커스 가면
+                return false;//한글 에러 잡기용도로 사용됨
+            },
+            minLength: 1,// 최소 글자수
+            autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
+            classes: {    //잘 모르겠음
+                "ui-autocomplete": "highlight"
+            },
+            delay: 250,    //검색창에 글자 써지고 나서 autocomplete 창 뜰 때 까지 딜레이 시간(ms)
+//          disabled: true, //자동완성 기능 끄기
+            position: { my : "right top", at: "right bottom" },
+            close : function(event){    //자동완성창 닫아질때 호출
+                //console.log(event);
+            }
+        });
+
+    });
+</script>
+                       </ul>
+                   </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <table id="export_table1" cellpadding="0" cellspacing="0" border="0" style="display:none;">
+            </table>
+        </div>
+    </div>
+
+<script>
+    $( document ).ready(function() {
+        //나의 리스트 항목중 첫번째에 일단 체크
+        setTimeout(function() {
+           $(".idx_1 input[type=radio]").prop('checked', true)
+        }, 1000);
+    });
+
+    function download_excel(){
+        var download_ment = "체크된 품목으로 다운로드 하시겠습니까?";
+        $("#result_table .tr2").each(function(index, item){
+            check_idx =  $(this).children('.td3').children('.mylist').children('li').children('.radio_class').children(':checked').val();
+            var product_kor = $(this).children('.td1').children('a').children('.kor_nm').text();
+            if(isNull(product_kor)){
+                product_kor = $(this).children('.td1').children('.kor_nm').text();
+            }
+            if(isNull(check_idx)){
+                alert("체크되지않은 항목 <"+product_kor+">이 있습니다. 대체품목이 리스트에 없을 경우 검색을 통해 추가해주세요.");
+                download_ment = "체크된 품목만 다운로드 하시겠습니까? 체크하지않은 항목은 빈칸으로 다운로드됩니다.";
+            }
+        });
+
+        if(confirm(download_ment)){
+            make_excel();
+        }
+    }
+
+    function make_excel(){
+        $("#export_table1").html('<tr class="tr1">\
+                    <td class="td1">품목</td>\
+                    <td class="td2">복지</td>\
+                    <td class="td3">대분류</td>\
+                    <td class="td4">소분류</td>\
+                    <td class="td5">종류</td>\
+                    <td class="td6">급/비</td>\
+                    <td class="td7">성분 및 함량</td>\
+                    <td class="td8">제품명</td>\
+                    <td class="td9">제조회사</td>\
+                    <td class="td10">대조약</td>\
+                    <td class="td11">약가</td>\
+                    <td class="td12">보험청구코드</td>\
+                    <td class="td13">포장단위</td>\
+                    <td class="td14">요율</td>\
+                    <td class="td15">비고</td>\
+                </tr>');
+
+        $("#result_table .tr2").each(function(index, item){
+            // 기존제품
+            var product_kor = $(this).children('.td1').children('a').children('.kor_nm').text();
+            if(isNull(product_kor)){
+                product_kor = $(this).children('.td1').children('.kor_nm').text();
+            }
+            var product_eng = $(this).children('.td1').children('a').children('.eng_nm').text();
+            if(isNull(product_eng)){
+                product_eng = $(this).children('.td1').children('.eng_nm').text();
+            }
+            var g_dang = $(this).children('.td2').children('.g_dang').text();
+            var ingradint = $(this).children('.td2').children('.ingradint').text();
+            // 우리사제품
+            var check_idx =  $(this).children('.td3').children('.mylist').children('li').children('.radio_class').children(':checked').val();
+            var bokgi = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .bokgi").text();
+            var category_1 = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .category_1").text();
+            var category_2 = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .category_2").text();
+            var category_3 = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .category_3").text();
+            var salary = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .salary").text();
+            var my_ingredient = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .my_ingredient").text();
+            var my_product = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .product").text();
+            var madeby = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .madeby").text();
+            var match_medicine = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .match_medicine").text();
+            var price = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .price").text();
+            var ins_code = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .ins_code").text();
+            var packet = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .packet").text();
+            var yoyul = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .yoyul").text();
+            var bigo = $(".mylist_"+(index+1)+" #mylist_li_"+check_idx+" .bigo").text();
+
+            export_table1_html = '<tr class="tr2">\
+                    <td class="td1">'+product_kor+'</td>\
+                    <td class="td2">'+bokgi+'</td>\
+                    <td class="td3">'+category_1+'</td>\
+                    <td class="td4">'+category_2+'</td>\
+                    <td class="td5">'+category_3+'</td>\
+                    <td class="td6">'+salary+'</td>\
+                    <td class="td7">'+my_ingredient+'</td>\
+                    <td class="td8">'+my_product+'</td>\
+                    <td class="td9">'+madeby+'</td>\
+                    <td class="td10">'+match_medicine+'</td>\
+                    <td class="td11">'+price+'</td>\
+                    <td class="td12">'+ins_code+'</td>\
+                    <td class="td13">'+packet+'</td>\
+                    <td class="td14">'+yoyul+'</td>\
+                    <td class="td15">'+bigo+'</td>\
+                </tr>';
+
+            $("#export_table1").append(export_table1_html);
+
+        });
+
+        $("#export_table1").table2excel({
+            exclude: ".noExl",
+            name: "Excel Document Name",
+            filename: getToday() +'_admin_MyMedicine.xls', //확장자를 여기서 붙여줘야한다.
+            fileext: ".xls",
+            exclude_img: true,
+            exclude_links: true,
+            exclude_inputs: true
+        });
+
+    }
+
+
+    //추가 버튼
+    function plus_myItem(ul_IDX){
+        $(".btn_info").hide();
+        var search_box_val = $("#search_item"+ul_IDX).val();
+        if(search_box_val.length < 2){
+            alert("검색하여 선택 한 후 add 버튼을 누르세요. 해당 리스트에 추가됩니다.")
+            return;
+        }
+        var sel_product = $("#sel_PRODUCT").val();
+        if(sel_product != search_box_val ){
+            alert("잘못된 선택. 다시한번 선택해주세요.");
+            $("#search_item"+ul_IDX).val("");
+            return;
+        }
+
+        var kor_nm          = $("#tr2_"+ul_IDX+" .kor_nm").text();
+        var li_length       = $(".mylist_"+ul_IDX+" li").length;
+        var sel_IDX         = $("#sel_IDX").val();
+        var sel_BOKGI       = $("#sel_BOKGI").val();
+        var sel_CATEGORY_1  = $("#sel_CATEGORY_1").val();
+        var sel_CATEGORY_2  = $("#sel_CATEGORY_2").val();
+        var sel_CATEGORY_3  = $("#sel_CATEGORY_3").val();
+        var sel_SALARY      = $("#sel_SALARY").val();
+        var sel_INGREDIENT  = $("#sel_INGREDIENT").val();
+        var sel_PRODUCT     = $("#sel_PRODUCT").val();
+        var sel_MADEBY      = $("#sel_MADEBY").val();
+        var sel_MATCH_MEDICINE = $("#sel_MATCH_MEDICINE").val();
+        var sel_PRICE       = $("#sel_PRICE").val();
+        var sel_INS_CODE    = $("#sel_INS_CODE").val();
+        var sel_PACKET      = $("#sel_PACKET").val();
+        var sel_YOYUL       = $("#sel_YOYUL").val();
+        var sel_BIGO        = $("#sel_BIGO").val();
+        var sel_REGIDATE    = $("#sel_REGIDATE").val();
+        var sel_INSERT_ID   = $("#sel_INSERT_ID").val();
+        var sel_MODIFYDATE  = $("#sel_MODIFYDATE").val();
+        var sel_MODIFY_ID   = $("#sel_MODIFY_ID").val();
+        var add_html        = '';
+        add_html += '<li class="idx_'+li_length+'" id="mylist_li_'+sel_IDX+'"> \
+                        <span class="radio_class"><input name="'+kor_nm+'[]" type="radio" value="'+sel_IDX+'"></span> \
+                        <span class="bokgi">'+sel_BOKGI+'</span> \
+                        <span class="category_1">'+sel_CATEGORY_1+'</span> \
+                        <span class="category_2">'+sel_CATEGORY_2+'</span> \
+                        <span class="category_3">'+sel_CATEGORY_3+'</span> \
+                        <span class="salary">'+sel_SALARY+'</span> \
+                        <span class="my_ingredient">'+sel_INGREDIENT+'</span> \
+                        <a href="javascript:myMediView('+sel_IDX+');"><span class="product">'+sel_PRODUCT+'</span></a> \
+                        <span class="madeby">'+sel_MADEBY+'</span> \
+                        <span class="match_medicine">'+sel_MATCH_MEDICINE+'</span> \
+                        <span class="price">'+sel_PRICE+'</span> \
+                        <span class="ins_code">'+sel_INS_CODE+'</span> \
+                        <span class="packet">'+sel_PACKET+'</span> \
+                        <span class="yoyul">'+sel_YOYUL+'</span> \
+                        <span class="bigo">'+sel_BIGO+'</span> \
+                    </li>';
+
+        //리스트에 붙이기
+        $(".mylist_"+ul_IDX).append(add_html);
+
+        //다시초기화
+        $("#search_item"+ul_IDX).val("");
+        $("#sel_IDX").val("");
+        $("#sel_BOKGI").val("");
+        $("#sel_CATEGORY_1").val("");
+        $("#sel_CATEGORY_2").val("");
+        $("#sel_CATEGORY_3").val("");
+        $("#sel_SALARY").val("");
+        $("#sel_INGREDIENT").val("");
+        $("#sel_PRODUCT").val("");
+        $("#sel_MADEBY").val("");
+        $("#sel_MATCH_MEDICINE").val("");
+        $("#sel_PRICE").val("");
+        $("#sel_PACKET").val("");
+        $("#sel_YOYUL").val("");
+        $("#sel_BIGO").val("");
+        $("#sel_REGIDATE").val("");
+        $("#sel_INSERT_ID").val("");
+        $("#sel_MODIFYDATE").val("");
+        $("#sel_MODIFY_ID").val("");
+
+    }
+ </script>
+ {% include 'footer.html' %}

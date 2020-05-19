@@ -1,0 +1,156 @@
+ {% include 'header.html' %}
+    <div id="main_body">
+ {% include 'nav.html' %}
+        <div id="contents">
+            <p class="page_title">계정 리스트 ( <span id="total_cnt">0</span>)
+                {% if session['level'] < 1 %}
+                <a class="btn1" href="javascript:new_user();">새계정추가</a>
+                {% endif %}
+            </p>
+            <form id="user_form" name="user_form" action = "./user_edit" method = "POST">
+            <input type="hidden" value="F" id="mode" name="mode" />
+            <table cellpadding="0" cellspacing="0" botder="0" id="user_list">
+                <colgroup>
+                    <col width="30%">
+                    <col width="30%">
+                    <col width="30%">
+                    <col width="10%">
+                </colgroup>
+                <tr class="tr1">
+                    <td class="td1">ID</td>
+                    <td class="td2">이름</td>
+                    <td class="td3">LEVEL</td>
+                    <td class="td4">
+                        수정
+                    </td>
+                </tr>
+                {% for items in result %}
+                <tr class="tr2" id="tr_{{items[0]}}">
+                    <td class="td1">{{items[0]}}</td>
+                    <td class="td2">{{items[2]}}</td>
+                    <td class="td3">{{items[3]}}</td>
+                    <td class="td4">
+                        <a href="javascript:modify_user('{{items[0]}}');" class="btn_edit"><img src="{{ url_for('static', filename='images/btn_edit.png') }}"></a>
+                        <a href="javascript:save_user();" class="btn_save"><img src="{{ url_for('static', filename='images/btn_save.png') }}"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            </form>
+        </div>
+    </div>
+ <script>
+    $( document ).ready(function() {
+         var total_cnt = $(".tr2").length;
+         $("#total_cnt").text(total_cnt + "명");
+
+    });
+     function save_user(){
+        var edit_id = $("#edit_id").val();
+        var edit_name = $("#edit_name").val();
+        var edit_level = $("#edit_level").val();
+        var idReg = /^[a-z]+[a-z0-9]{3,20}$/g;
+
+        if(!idReg.test(edit_id)){
+            alert("아이디는 영문으로시작하는 영문+숫자조합 4자~20자만 가능합니다.");
+            return;
+        }
+        if(edit_name.length < 1){
+            alert("이름을 입력하세요.");
+            return;
+        }
+        if(isNull(edit_level)){
+            alert("레벨을 확인해주세요.");
+            return;
+        }
+
+        if(confirm("저장 하시겠습니까?")){
+            user_form.submit();
+        }
+     }
+
+
+     function delete_user(){
+        if(confirm("이 계정을 삭제 하시겠습니까?")){
+            $("#mode").val("D");
+            user_form.submit();
+        }
+     }
+
+     function modify_user(idx){
+        if($("#mode").val() != "F"){
+            alert("수정중인 목록을 먼저 저장 후 사용하세요.");
+            return;
+        }
+        /* 수정중 모드*/
+        $("#mode").val("E");
+        $(".btn_edit").hide();
+        /* 수정 */
+        var ID = $("#tr_"+idx+ " .td1").text();
+        var NAME = $("#tr_"+idx+ " .td2").text();
+        var LEVEL = $("#tr_"+idx+ " .td3").text();
+        var edit_html = "";
+
+        edit_html = '<td class="td1"><input type="text" name="edit_id" class="bg_ccc "id="edit_id" value="'+ID+'" readonly> \
+                    <a href="javascript:delete_user();" class="btn_edit"><img src="{{ url_for('static', filename='images/btn_del.png') }}"></a> \
+                        </td> \
+                    <td class="td2"><input type="text" name="edit_name" id="edit_name" value="'+NAME+'"></td> \
+                    <td class="td3">\
+                        <select name="edit_level" id="edit_level">\
+                            <option value="10">10</option>\
+                            <option value="9">9</option>\
+                            <option value="8">8</option>\
+                            <option value="7">7</option>\
+                            <option value="6">6</option>\
+                            <option value="5">5</option>\
+                            <option value="4">4</option>\
+                            <option value="3">3</option>\
+                            <option value="2">2</option>\
+                            <option value="1">1</option>\
+                        </select>\
+                    </td> \
+                    <td class="td4"> \
+                        <a href="javascript:modify_user('+ID+');" class="btn_edit" style="display:none;"><img src="{{ url_for('static', filename='images/btn_edit.png') }}"></a> \
+                        <a href="javascript:save_user();" class="btn_save" style="display:block;"><img src="{{ url_for('static', filename='images/btn_save.png') }}"></a> \
+                    </td>';
+        $("#tr_"+idx).html(edit_html);
+        $("#edit_level").val(LEVEL);
+     }
+
+     function new_user(){
+        if($("#mode").val() != "F"){
+            alert("수정중인 목록을 먼저 저장 후 사용하세요.");
+            return;
+        }
+        /* 입력중 모드*/
+        $("#mode").val("I");
+        $(".btn_edit").hide();
+
+        var insert_html = "";
+        insert_html = '<tr class="tr2" id="tr_insert"> \
+                        <td class="td1"><input type="text" name="edit_id" id="edit_id" value=""></td> \
+                        <td class="td2"><input type="text" name="edit_name" id="edit_name" value=""></td> \
+                        <td class="td3">\
+                            <select name="edit_level" id="edit_level">\
+                                <option value="10">10</option>\
+                                <option value="9">9</option>\
+                                <option value="8">8</option>\
+                                <option value="7">7</option>\
+                                <option value="6">6</option>\
+                                <option value="5">5</option>\
+                                <option value="4">4</option>\
+                                <option value="3">3</option>\
+                                <option value="2">2</option>\
+                                <option value="1">1</option>\
+                            </select>\
+                        </td> \
+                        <td class="td4"> \
+                            <a href="javascript:save_user();" class="btn_save" style="display:block;"><img src="{{ url_for('static', filename='images/btn_save.png') }}"></a> \
+                        </td>\
+                    </tr>';
+        $("#user_list").append(insert_html);
+
+     }
+
+ </script>
+ {% include 'footer.html' %}

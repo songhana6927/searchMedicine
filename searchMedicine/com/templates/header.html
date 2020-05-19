@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyMedicine</title>
+    <!-- reset.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search_main.css') }}" />
+    <script src="{{ url_for('static', filename='js/jquery-3.5.0.min.js') }}" ></script>
+    <script src="{{ url_for('static', filename='js/common.js') }}" ></script>
+    <style>
+{% if session['level'] < 5 %}
+    /*관리자*/
+    #nav li {width:174px;}
+{% else %}
+    /*사용자*/
+    #nav li {width:263px;}
+{% endif %}
+    </style>
+</head>
+<body>
+<div id="loading_gif" >
+    <P class="align_center"><img src="{{ url_for('static', filename='images/loading2.gif') }}" alt="loading"></P>
+    <P class="align_center" id="loading_info">잠시만 기다려 주세요.</P>
+</div>
+<div id="main_wrap">
+    <div class="popup" id="change_pwd_popup" >
+        <div class="popup_wrap">
+            <p class="popup_title">비밀번호 변경 <a id="btn_close" href="javascript:close_pwd_pop()"><img src="{{ url_for('static', filename='images/btn_close.png') }}" alt="close" title="close"></a></p>
+            <div class="popup_contents">
+                <form id="form_pwd_chg" name="form_pwd_chg" action = "./chg_pwd" method = "POST" enctype="multipart/form-data">
+                    <input type="hidden" name="pass_check" id="pass_check"  value="F" />
+                    <p class="my_info">ID : {{session['user_id']}} / NAME : {{session['user_name']}}</p>
+                    <p><input type="password" name="chg_pwd" id="chg_pwd" class="bg_white" placeholder="변경할 비밀번호를 입력하세요" /></p>
+                    <p><input type="password" name="chg_pwd2" id="chg_pwd2" class="bg_white" placeholder="입력한 비밀번호 확인" /> </p>
+                    <p><a href="javascript:action_pwd_chg()" class="btn1" id="btn_pwd_chg">변경</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="top_line">
+        <p class="align_right"><a href="javascript:change_pwd()" id="logout"><img style="width:20px" src="{{ url_for('static', filename='images/btn_password.png') }}" alt="change password"></a> <span class="my_name">{{session['user_name']}}님 반갑습니다.  &nbsp;&nbsp;</span> <a href="javascript:logout()" id="logout"><img src="{{ url_for('static', filename='images/btn_logout.png') }}" alt="logout">로그아웃</a></p>
+    </div>
+    <div class="overflow_hidden header_wrap">
+        <div id="main_header">
+            <div id="main_logo">
+                <P class="align_center"><img src="{{ url_for('static', filename='images/logo_finditem.gif') }}" alt="logo find item"></P>
+            </div>
+            <div id="main_TITLE">
+                <P>내 판매약 찾기</P>
+            </div>
+        </div>
+        <div id="nav">
+            <ul>
+                <li id="nav1"><a href="/search">원료명으로 검색</a></li>
+                <li id="nav2"><a href="/list">나의 약 리스트</a></li>
+                {% if session['level'] < 5 %}
+                <li id="nav3"><a href="/user">계정관리</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>

@@ -1,0 +1,40 @@
+ {% include 'header.html' %}
+    <div id="main_body">
+ {% include 'nav.html' %}
+        <div id="contents">
+            <p class="page_title">원료명으로 검색  <img src="{{ url_for('static', filename='images/btn_search.png') }}" alt="검색"></p>
+            <table cellpadding="0" cellspacing="0" botder="0" id="search_table">
+                <tr class="tr1">
+                    <td class="td1">약품리스트 <a class="btn1" id="search_start" href="javascript:search_start();">검색</a>
+                    </td>
+                </tr>
+                <tr class="tr2">
+                    <td class="td1">
+                        <form id="form" name="form" action = "./result" method = "POST">
+                            <textarea id="search_product" name="search_product" placeholder="엑셀파일에서 제목을 제외한 품목명만&#10;열로 복사해서 넣으세요. &#10;&#10;ex)&#10;클래마신건조시럽125mg/5ml&#10;마노엘정&#10;아목클정375mg">클래마신건조시럽125mg/5ml
+페스틴정37.5mg
+아목클정375mg</textarea>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+<script>
+    function search_start(){
+        var search_product = $("#search_product").val().split("\n");
+        //빈 문자열 제외하고 갯수 확인
+        search_product = search_product.filter(function(e){return $.trim(e)});
+        if (confirm(search_product.length +"개의 검색을 진행할까요?")){
+            var min = search_product.length * 10 / 60;
+            loading("검색 항목에 따라 "+Math.ceil(min)+"분 정도 소요될 수 있습니다.<br/>창을 닫지 마세요.");
+            form.submit();
+        }else{
+            alert("검색 항목은 개행문자(엔터, 줄바꿈)을 기준으로 구분됩니다.");
+            return;
+        }
+
+    }
+</script>
+ {% include 'footer.html' %}
