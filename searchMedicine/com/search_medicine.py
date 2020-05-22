@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 import datetime
 from random import randint
 import re
