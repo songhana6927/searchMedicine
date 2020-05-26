@@ -4,13 +4,12 @@ import pymysql
 
 # 앱 시크릿코드
 def secret_code():
-    return b'_5#y2L"F4Q8Az\n\xec]/'
+    return "시크릿"
 
 # select 용
 def sql_init():
     # MySQL Connection 연결
-    conn = pymysql.connect(host='db.hana6927.gabia.io', user='hana6927', password='hana1209!@',
-                           db='dbhana6927', charset='utf8')
+    conn = pymysql.connect("db연결")
 
     # Connection 으로부터 Cursor 생성
     curs = conn.cursor()
