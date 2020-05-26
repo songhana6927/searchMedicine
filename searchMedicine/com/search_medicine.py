@@ -11,7 +11,7 @@ import urllib.parse
 import traceback
 import time
 
-from com.mylist_behind import myMedi_select
+from mylist_behind import myMedi_select
 from operator import itemgetter
 
 def search_google(target,start,site):

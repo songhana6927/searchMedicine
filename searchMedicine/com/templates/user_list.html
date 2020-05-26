@@ -3,7 +3,7 @@
  {% include 'nav.html' %}
         <div id="contents">
             <p class="page_title">계정 리스트 ( <span id="total_cnt">0</span>)
-                {% if session['level'] < 1 %}
+                {% if session['level'] < 2 %}
                 <a class="btn1" href="javascript:new_user();">새계정추가</a>
                 {% endif %}
             </p>
