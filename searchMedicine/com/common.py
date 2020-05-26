@@ -2,7 +2,7 @@
 
 import re
 from flask import session
-from com.sqlinit import sql_init, sql_commit
+from sqlinit import sql_init, sql_commit
 
 
 def login_result(result):

@@ -4,11 +4,10 @@ from datetime import time, datetime
 from flask import Flask, render_template, request, url_for, flash, session, jsonify
 from werkzeug.utils import redirect
 import re
-
-from com.sqlinit import version_check, secret_code
-from com.search_medicine import search_google
-from com.mylist_behind import mylist_select, select_item_product, mylist_upload, myView_select, my_update
-from com.common import login_result, logout_result, session_check, OrderedSet, chg_user_info, user_list_select
+from sqlinit import version_check, secret_code
+from search_medicine import search_google
+from mylist_behind import mylist_select, select_item_product, mylist_upload, myView_select, my_update
+from common import login_result, logout_result, session_check, OrderedSet, chg_user_info, user_list_select
 import pandas as pd
 import xlrd
 

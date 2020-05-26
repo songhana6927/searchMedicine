@@ -3,8 +3,8 @@ import time
 
 from flask import session
 
-from com.sqlinit import sql_init, sql_commit
-from com.common import cleanText
+from sqlinit import sql_init, sql_commit
+from common import cleanText
 
 
 def mylist_select(u_id):
